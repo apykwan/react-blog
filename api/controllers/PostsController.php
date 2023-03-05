@@ -8,14 +8,13 @@ class PostsController {
     public $conn = null;
 
     public function __construct() {
-        // create connection
         $this->conn = (new DB())->database();
     }
 
     ## Getting posts from third party library
     public function getPosts() {
         try {
-            // Fetching posts
+            # Fetching posts
             $post_url = "https://jsonplaceholder.typicode.com/posts";
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
@@ -29,7 +28,7 @@ class PostsController {
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 
-            // Getting Images.
+            # Getting Images.
             $photo_url = "https://jsonplaceholder.typicode.com/photos";
             $chImg = curl_init();
             curl_setopt($chImg, CURLOPT_AUTOREFERER, TRUE);
@@ -55,14 +54,33 @@ class PostsController {
                 $newArray[] = $resData;
             }
 
-            var_dump($newArray);
-            exit;
+            $this->savePostsToDatabase($newArray);
         } catch(\Exception $e) {
             var_dump($e->getMessage());
             exit;
         }
     }
 
+    ## Save posts in database from api
+    public function savePostsToDatabase($posts = null) {
+        foreach($posts as $post) {
+            $userId = $post['userId'];
+            $title = $post['title'];
+            $content = $post['body'];
+            $image = $post['image'];
+
+            $sql = "INSERT INTO posts(`user_id`, `title`, `content`, `image`) VALUES(?,?,?,?)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_Param('ssss', $userId, $title, $content, $image);
+            
+            if($stmt->execute()) {
+                echo "New record created successfully";
+            } else {
+                echo "Error Fetching posts". "<br/>". mysqli_error($this->conn);
+            }
+        }
+        mysqli_close($this->conn);
+    }
 }
 
 ?>

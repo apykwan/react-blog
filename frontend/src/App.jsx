@@ -26,17 +26,17 @@ function App() {
 		!newValue ? setTheme('dark') : setTheme('light');
 	};
 
-	useEffect(() => {
-		const getUsersInput = setTimeout(() => {
-			const url = `http://localhost/reactPhp/api/searchResult?keyword=${searchTerm}`;
+	// useEffect(() => {
+	// 	const getUsersInput = setTimeout(() => {
+	// 		const url = `http://localhost/reactPhp/api/searchResult?keyword=${searchTerm}`;
 
-			fetchHandler(url)
-				.then(items => setSearchResultItems(items.posts))
-				.then(err => toast.error("Fail to fetch"));
-		}, 100);
+	// 		fetchHandler(url)
+	// 			.then(items => setSearchResultItems(items.posts))
+	// 			.then(err => toast.error("Fail to fetch"));
+	// 	}, 100);
 		
-		return () => clearTimeout(getUsersInput)
-	}, [searchTerm]);
+	// 	return () => clearTimeout(getUsersInput)
+	// }, [searchTerm]);
 
 	return (
 		<ChakraProvider>

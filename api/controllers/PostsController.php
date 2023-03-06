@@ -81,6 +81,41 @@ class PostsController {
         }
         mysqli_close($this->conn);
     }
+
+    ## Getting paginated posts from database
+    public function getPostsFromDatabase() {
+        try {
+            $perPage = $_GET['limit'] ?? 5;
+            $pageNumber = $_GET['offset'] ??0;
+            $postsArray = [];
+
+            $sql_totalPost = "SELECT count(*) AS numOfPosts FROM posts";
+            $data = mysqli_fetch_assoc(mysqli_query($this->conn, $sql_totalPost));
+            $totalPosts = $data['numOfPosts'];
+
+            $sql_limit = "SELECT * FROM posts ORDER BY id LIMIT ? OFFSET ?";
+            $stmt = $this->conn->prepare($sql_limit);
+            $stmt->bind_Param('ss', $perPage, $pageNumber);
+
+            if(!$stmt->execute()) {
+                trigger_error('Error executing query: ' . $stmt->error);
+            }
+
+            $response = $stmt->get_result();
+            while($row = $response->fetch_assoc()) {
+                $postsArray['posts'][] = $row;
+            }
+           
+            $postsArray['count'] = $totalPosts;
+
+            mysqli_close($this->conn);
+
+            echo json_encode($postsArray, JSON_PRETTY_PRINT);
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
+            exit;
+        }
+    }
 }
 
 ?>

@@ -1,27 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { Container, Heading } from '@chakra-ui/react';
 
-import { fetchHandler } from '../helpers/utils';
+import { fetchDataHandler } from '../helpers/utils';
 
 export default function SinglePost() {
     const location = useLocation();
-    const [postDataId, setPostData] = useState({});
     const [postData,setCurrentPost] = useState(null);
 
     useEffect(()=> {
-        setPostData(location.state);
-
-        const url = `http://localhost/reactPhp/api/getCurrentTopic?id=${postDataId}`;
-        fetchHandler(url)
+        const url = `/getCurrentTopic?id=${location.state}`;
+        fetchDataHandler(url)
             .then(item => setCurrentPost(item))
-            .then(err => toast.error("Fail to fetch"));
+            .catch(err => toast.error("Fail to fetch"));
 
         const errorFetchTimeout = setTimeout(()=> {
-            if(location.state == null)
-            {
+            if(location.state == null) 
                 window.location.href='/404';
-            }
         },100);
 
         return () => clearTimeout(errorFetchTimeout);

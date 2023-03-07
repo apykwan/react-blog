@@ -22,10 +22,11 @@ export default function Navbar({ changeThemeSwitch, isSwitchOn, theme, onOpen })
                             display={{ base: 'none', md: 'flex' }}
                         >
                             <Link to="/">Home</Link>
-                            <Link to="/contact">Contact</Link>
                         </HStack>
                     </HStack>
+
                     <Search2Icon onClick={onOpen}></Search2Icon>
+                    
                     <Flex alignItems={'center'}>
                         <Spacer></Spacer>
                         <Stack direction={'row'} spacing={7}>

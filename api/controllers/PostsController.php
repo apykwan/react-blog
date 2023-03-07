@@ -116,6 +116,62 @@ class PostsController {
             exit;
         }
     }
+
+    ## Getting search results from database
+    public function getSearchResult() {
+        try {
+
+            $postsArray = [];
+            $keyword = $_GET['keyword'] ?? null;
+
+            if (!$keyword) {
+                exit;
+            }
+
+            $searchParam = "%{$keyword}%";
+            $sql = "SELECT id, title FROM posts WHERE title LIKE ? LIMIT 5";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_Param('s', $searchParam);
+
+            if(!$stmt->execute()) {
+                trigger_error('Error executing query: ' . $stmt->error);
+            }
+
+            $response = $stmt->get_result();
+            while($row = $response->fetch_assoc()) {
+                $postsArray['posts'][] = $row;
+            }
+
+            echo json_encode($postsArray, JSON_PRETTY_PRINT);
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
+            exit;
+        }
+    }
+
+    public function getCurrentTopic() {
+        try {
+            $id = $_GET['id'] ?? null;
+
+            if(!$id)
+                exit;
+            
+            $sql = "SELECT * FROM posts WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_Param('s', $id);
+
+            if(!$stmt->execute()) {
+                trigger_error('Error executing query: ' . $stmt->error);
+            }
+
+            $result = $stmt->get_result();
+
+            echo json_encode($result->fetch_assoc(), JSON_PRETTY_PRINT);
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
+            exit;
+        }
+    }
 }
 
 ?>

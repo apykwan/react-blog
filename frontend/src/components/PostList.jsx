@@ -4,10 +4,18 @@ import { Link } from "react-router-dom";
 import { slugify } from '../helpers/utils';
 
 export default function PostList({id, title, content, userId, image}) {
-
   return (
-    <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' m={15}>
-        <Link to={slugify(title)} state={id}>
+    <Box 
+        maxW='sm' 
+        borderWidth='1px' 
+        borderRadius='lg' 
+        overflow='hidden' 
+        m={15}
+    >
+        <Link 
+            to={slugify(title)} 
+            state={id}
+        >
             <img src={image} alt={title}/>
             <Box p={6}>
                 <Box slug={title}

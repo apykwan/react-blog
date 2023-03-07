@@ -8,7 +8,7 @@ import { lightTheme, darkTheme } from './themes/theme';
 import Navbar from './components/Navbar';
 import SearchModal from './components/SearchModal';
 import Routers from './routes/Routers';
-import { fetchHandler } from './helpers/utils';
+import { fetchDataHandler } from './helpers/utils';
 
 function App() {
 	const [theme, setTheme] = useState("light");
@@ -26,17 +26,17 @@ function App() {
 		!newValue ? setTheme('dark') : setTheme('light');
 	};
 
-	// useEffect(() => {
-	// 	const getUsersInput = setTimeout(() => {
-	// 		const url = `http://localhost/reactPhp/api/searchResult?keyword=${searchTerm}`;
+	useEffect(() => {
+		const getUsersInput = setTimeout(() => {
+			let url = `/searchResult?keyword=${searchTerm}`;
 
-	// 		fetchHandler(url)
-	// 			.then(items => setSearchResultItems(items.posts))
-	// 			.then(err => toast.error("Fail to fetch"));
-	// 	}, 100);
+			fetchDataHandler(url)
+				.then(items => setSearchResultItems(items.posts))
+				.catch(err => toast.error("Fail to fetch"));
+		}, 100);
 		
-	// 	return () => clearTimeout(getUsersInput)
-	// }, [searchTerm]);
+		return () => clearTimeout(getUsersInput);
+	}, [searchTerm]);
 
 	return (
 		<ChakraProvider>

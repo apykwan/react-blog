@@ -1,15 +1,13 @@
-export const fetchHandler = async (url, method = "GET") => {
-    try {
-        const res =  await fetch(url, { 
-                method,
-                headers: {
-                    "Access-Control-Allow-Origin" : "*", 
-                    "Content-Type": "application/json" 
-                }
-            }
-        );
+import axios from 'axios';
 
-        return await res.json();
+const instance = axios.create({
+    baseURL: 'http://localhost:8088/react-blog/api'
+});
+
+export const fetchDataHandler = async url => {
+    try {
+        const { data } = await instance.get(url);
+        return data;
     } catch (err) {
         console.log(err);
         return [];
@@ -18,7 +16,7 @@ export const fetchHandler = async (url, method = "GET") => {
 
 export const slugify = string => {
     return string
-    .toLowerCase()
-    .replace(/ /g, '-')
-    .replace(/[^\w-]+/g, '');
+        .toLowerCase()
+        .replace(/ /g, '-')
+        .replace(/[^\w-]+/g, '');
 };

@@ -6,7 +6,9 @@ import {
 
 import { slugify } from '../helpers/utils';
 
-export default function SearchModal({ initialRef, onClose, isOpen, searchResultItems, setSearchTerm }) {
+export default function SearchModal({ 
+    initialRef, onClose, isOpen, searchResultItems, setSearchTerm 
+}) {
     return (
         <>
             <Modal

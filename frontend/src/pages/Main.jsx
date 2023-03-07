@@ -4,6 +4,8 @@ import { Paginator, Container,PageGroup, usePaginator } from "chakra-paginator";
 import PostList from '../components/PostList';
 import { Grid } from '@chakra-ui/react';
 
+import { fetchDataHandler } from '../helpers/utils';
+
 export default function Main() {
    const [postsTotal, setPostsTotal] = useState(undefined);
     const [posts, setPosts] = useState([]);
@@ -46,21 +48,13 @@ export default function Main() {
         }
     }
 
-    // Fetching posts from database
-    const fetchPosts = async (pageSize, offset) => {
-        try {
-            const { data } = await axios.get(`http://localhost:8088/react-blog/api/posts?limit=${pageSize}&offset=${offset}`)
-            return data;
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
     useEffect(()=>{
         let pageSize = 10;
         let offset = 0;
+        let url = `/posts?limit=${pageSize}&offset=${offset}`;
 
-        fetchPosts(pageSize, offset).then(posts =>{
+        // Fetching posts from database
+        fetchDataHandler(url).then(posts =>{
             if (posts) {
                 setPostsTotal(posts.count);
                 setPosts(posts.posts);

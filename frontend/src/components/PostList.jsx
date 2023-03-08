@@ -22,7 +22,8 @@ export default function PostList({id, title, content, userId, image}) {
                     mt='1'
                     fontWeight='semibold'
                     as='h4'
-                    lineHeight='tight'>
+                    lineHeight='tight'
+                >
                     {title}
                 </Box>
                 <hr/>
@@ -34,7 +35,8 @@ export default function PostList({id, title, content, userId, image}) {
                         color='grey.500'
                         fontWeight='semibold'
                         fontSize='xs'
-                        ml='2'>
+                        ml='2'
+                    >
                             {userId}
                     </Box>
                 </Box>

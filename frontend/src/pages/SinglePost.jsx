@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useLocation, Link } from "react-router-dom";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from "react-router-dom";
 import { Container, Heading } from '@chakra-ui/react';
 
-import { fetchDataHandler } from '../helpers/utils';
+import { getCurrentTopic } from '../redux/reducers/postSlice';
 
 export default function SinglePost() {
+    const dispatch = useDispatch();
+    const postData = useSelector(state => state.post.currentTopic);
     const location = useLocation();
-    const [postData,setCurrentPost] = useState(null);
 
     useEffect(()=> {
         const url = `/getCurrentTopic?id=${location.state}`;
-        fetchDataHandler(url)
-            .then(item => setCurrentPost(item))
-            .catch(err => toast.error("Fail to fetch"));
+        dispatch(getCurrentTopic(url));
 
         const errorFetchTimeout = setTimeout(()=> {
             if(location.state == null) 

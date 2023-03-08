@@ -5,10 +5,11 @@ import { useDisclosure } from '@chakra-ui/react';
 
 import {  useTheme } from '../context/themeContext';
 import { GlobalStyles } from '../themes/theme';
+import SearchModal from './SearchModal';
 
-export default function Navbar({ onOpen }) {
+export default function Navbar() {
     const {theme, isSwitchOn, changeThemeSwitch } = useTheme();
-    // const { onOpen } = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <>
             <GlobalStyles/>
@@ -41,6 +42,7 @@ export default function Navbar({ onOpen }) {
                     </Flex>
                 </Flex>
             </Box>
+            <SearchModal onClose={onClose} isOpen={isOpen} />
         </>
     );
 }

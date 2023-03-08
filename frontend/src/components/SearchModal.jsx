@@ -3,12 +3,14 @@ import {
     Modal, ModalOverlay, ModalContent, ModalHeader,ModalFooter, 
     ModalBody, ModalCloseButton, Button, FormControl, Input, ListItem, UnorderedList
 } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
 
 import { slugify } from '../helpers/utils';
 
 export default function SearchModal({ 
     initialRef, onClose, isOpen, searchResultItems, setSearchTerm 
 }) {
+    // const { isOpen, onClose } = useDisclosure();
     return (
         <>
             <Modal

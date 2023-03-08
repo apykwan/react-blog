@@ -1,30 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider, useDisclosure } from '@chakra-ui/react';
-import { ThemeProvider } from 'styled-components';
+
 import { Toaster, toast } from 'react-hot-toast';
 
-import { lightTheme, darkTheme } from './themes/theme';
+import {  SetThemeProvider } from './context/themeContext';
 import Navbar from './components/Navbar';
 import SearchModal from './components/SearchModal';
 import Routers from './routes/Routers';
 import { fetchDataHandler } from './helpers/utils';
 
 function App() {
-	const [theme, setTheme] = useState("light");
 	const [searchTerm, setSearchTerm] = useState([]);
 	const [searchResultItems, setSearchResultItems] = useState([]);
-	const [isSwitchOn, setIsSwitchOn] = useState(true);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const initialRef = useRef();
-
-	const changeThemeSwitch = () => {
-		let newValue = null;
-		newValue = !isSwitchOn;
-		setIsSwitchOn(newValue);
-
-		!newValue ? setTheme('dark') : setTheme('light');
-	};
 
 	useEffect(() => {
 		const getUsersInput = setTimeout(() => {
@@ -40,18 +30,13 @@ function App() {
 
 	return (
 		<ChakraProvider>
-			<ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+			<SetThemeProvider>
 				<BrowserRouter>
 					<Toaster
 						position="top-center"
 						reverseOrder={false}
 					/>
-					<Navbar 
-						theme={theme} 
-						changeThemeSwitch={changeThemeSwitch} 
-						isSwitchOn={isSwitchOn} 
-						onOpen={onOpen} 
-					/>
+					<Navbar onOpen={onOpen} />
 					<SearchModal 
 						initialRef={initialRef} 
 						onClose={onClose} 
@@ -61,7 +46,7 @@ function App() {
 					/>
 					<Routers />
 				</BrowserRouter>
-			</ThemeProvider>
+			</SetThemeProvider>
 		</ChakraProvider>
 	);
 }

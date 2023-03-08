@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Switch , HStack, Stack, Flex, Box, Spacer } from '@chakra-ui/react';
 import { MoonIcon, SunIcon, Search2Icon } from '@chakra-ui/icons';
+import { useDisclosure } from '@chakra-ui/react';
 
+import {  useTheme } from '../context/themeContext';
 import { GlobalStyles } from '../themes/theme';
 
-export default function Navbar({ changeThemeSwitch, isSwitchOn, theme, onOpen }) {
+export default function Navbar({ onOpen }) {
+    const {theme, isSwitchOn, changeThemeSwitch } = useTheme();
+    // const { onOpen } = useDisclosure();
     return (
         <>
             <GlobalStyles/>
